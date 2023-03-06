@@ -1,3 +1,4 @@
+import { calculateOverrideValues } from 'next/dist/server/font-utils';
 import React from 'react';
 import { useTheme } from '../../utils/themeProvider';
 
@@ -6,12 +7,14 @@ interface Props {
   onClick: () => void;
 }
 
+
+
 const Layout: React.FC<Props> = ({ children, onClick }) => {
   const { theme } = useTheme();
 
   return (
     <div
-      className="min-w-max text-xs md:min-w-full md:text-base"
+      className="h-full text-xs min-w-max md:min-w-full md:text-base"
       onClick={onClick}
       style={{
         color: theme.foreground,
@@ -21,6 +24,7 @@ const Layout: React.FC<Props> = ({ children, onClick }) => {
         className="w-full h-full p-2"
         style={{
           background: theme.background,
+          minHeight: '100vh',
         }}
       >
         {children}

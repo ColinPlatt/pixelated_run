@@ -5,6 +5,9 @@ import { Layout } from '../components/layout';
 import '../styles/global.css';
 import { ShellProvider } from '../utils/shellProvider';
 import { ThemeProvider } from '../utils/themeProvider';
+import { WagmiConfig } from 'wagmi';
+import { wagmiClient } from '../utils/web3';
+import { SWRConfig } from 'swr';
 
 const App = ({ Component, pageProps }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -18,21 +21,32 @@ const App = ({ Component, pageProps }) => {
   }, []);
 
   return (
-    <ThemeProvider>
-      <ShellProvider>
-        <Head>
-          <meta
-            name="viewport"
-            content="initial-scale=1.0, width=device-width"
-            key="viewport"
-          />
-        </Head>
+    <WagmiConfig client={wagmiClient}>
+      <SWRConfig
+        value={{
+          refreshInterval: 10 * 60 * 1000,
+          refreshWhenHidden: false,
+          revalidateOnFocus: false,
+          revalidateOnReconnect: false,
+        }}
+      >
+        <ThemeProvider>
+          <ShellProvider>
+            <Head>
+              <meta
+                name="viewport"
+                content="initial-scale=1.0, width=device-width"
+                key="viewport"
+              />
+            </Head>
 
-        <Layout onClick={onClickAnywhere}>
-          <Component {...pageProps} inputRef={inputRef} />
-        </Layout>
-      </ShellProvider>
-    </ThemeProvider>
+            <Layout onClick={onClickAnywhere}>
+              <Component {...pageProps} inputRef={inputRef} />
+            </Layout>
+          </ShellProvider>
+        </ThemeProvider>
+      </SWRConfig>
+    </WagmiConfig>
   );
 };
 

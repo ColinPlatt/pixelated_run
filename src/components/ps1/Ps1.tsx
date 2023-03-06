@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useTheme } from '../../utils/themeProvider';
+import { useAuth } from "@/hooks"
 
 export const Ps1 = () => {
   const [hostname, setHostname] = useState('');
+  const [username, setUsername] = useState('');
   const { theme } = useTheme();
+  const { address: connectedAddress } = useAuth();
 
   useEffect(() => {
     if (typeof window !== undefined) {
       setHostname(window.location.hostname);
+      setUsername(
+        connectedAddress
+          ? connectedAddress.slice(0, 4) +
+              '___' +
+              connectedAddress.slice(connectedAddress.length - 4)
+          : 'guest',
+      );
     }
   }, []);
 
@@ -18,7 +28,7 @@ export const Ps1 = () => {
           color: theme.yellow,
         }}
       >
-        guest
+        {username}
       </span>
       <span
         style={{
