@@ -5,5 +5,3 @@ export const twitter = async (args: string[]): Promise<string> => {
 
   return 'Opening Twitter...';
 };
-
-

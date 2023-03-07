@@ -4,7 +4,7 @@ import { publicProvider } from 'wagmi/providers/public';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import { injectedWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets';
 
-import { NETWORK_RPC_URL } from './env-vars';
+import { NETWORK_RPC_URL } from '@/utils/web3/env-vars';
 
 export const cantoChain: Chain = {
   id: 7_700,
