@@ -10,7 +10,10 @@ export const Ps1 = () => {
 
   useEffect(() => {
     if (typeof window !== undefined) {
-      setHostname(window.location.hostname);
+      const cleanedName = window.location.hostname.split('www.');
+      const cleanHost =
+        cleanedName.length > 0 ? cleanedName[1] : cleanedName[0];
+      setHostname(cleanHost);
       setUsername(
         connectedAddress
           ? connectedAddress.slice(0, 4) +
