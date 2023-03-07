@@ -5,6 +5,7 @@ import {
   mintNft,
   getHasAccepted,
   acceptNft,
+  replenishNft
 } from '@/api';
 
 const mintHelp = async (): Promise<string> => {
@@ -13,6 +14,10 @@ const mintHelp = async (): Promise<string> => {
 
 const acceptHelp = async (): Promise<string> => {
   return 'Usage: accept "I understand that by minting this NFT I have a duty to cherish it. If I fail to do so, it will perish and it will be my fault."';
+};
+
+const replenishHelp = async (): Promise<string> => {
+  return 'Usage: replenish [id] [days]. Example: replenish 256 7';
 };
 
 // @todo figure out how to return a response while we await
@@ -37,7 +42,7 @@ export const info = async (args: string[]): Promise<string> => {
 };
 
 export const accept = async (args: string[]): Promise<string> => {
-  if (args[0] == '--help' || args[0] == '-h') return acceptHelp();
+  if (args.length == 0 || args[0] == '--help' || args[0] == '-h') return acceptHelp();
   
   if (
     args.join(' ') !=
@@ -54,13 +59,12 @@ export const accept = async (args: string[]): Promise<string> => {
   } else {
     return acceptNft(cleanedTerms.slice(1, cleanedTerms.length - 1));
   }
-
-  return acceptNft(connectedAddress);
 };
 
-// expect args[0] = ID, args[1] = numberOfDays
+
 export const mint = async (args: string[]): Promise<string> => {
   if (args[0] == '--help' || args[0] == '-h') return mintHelp();
+  if (args.length != 0) return mintHelp();
 
   const connectedAddress = await connectWallet();
 
@@ -71,6 +75,23 @@ export const mint = async (args: string[]): Promise<string> => {
   }
 };
 
-export const replenish = async (): Promise<string> => {
-  return 'disconnected';
+// expect args[0] = ID, args[1] = numberOfDays
+export const replenish = async (args: string[]): Promise<string> => {
+  if (
+    args.length == 0 ||
+    args.length > 2 ||
+    args[0] == '--help' ||
+    args[0] == '-h'
+  )
+    return mintHelp();
+  let days: string;
+  if (args.length == 1) {
+    days = '10';
+  } else {
+    days = args[1];
+  }
+
+  const connectedAddress = await connectWallet();
+
+  return replenishNft(connectedAddress, args[0], days);
 };

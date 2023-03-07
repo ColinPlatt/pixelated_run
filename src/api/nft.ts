@@ -5,8 +5,9 @@ import {
   readContract,
   readContracts,
   fetchBalance,
-  prepareWriteContract, 
+  prepareWriteContract,
   writeContract,
+  waitForTransaction,
 } from '@wagmi/core';
 import { BigNumber } from 'ethers';
 import { parseEther } from 'ethers/lib/utils.js';
@@ -97,9 +98,12 @@ export async function acceptNft(terms: string): Promise<string> {
     chainId: 7700,
   });
 
-  const data = await writeContract(config);
+  const { hash } = await writeContract(config);
+  const data = await waitForTransaction({
+    hash: hash,
+  });
 
-  return `sending transaction: <a href="https://tuber.build/tx/${data.hash.toString()}">view on tuber.build</a>`;
+  return `acceptance completed: <a href="https://tuber.build/tx/${hash.toString()}">view on tuber.build</a>`;
 }
 
 export async function mintNft(address: `0x${string}`): Promise<string> {
@@ -122,8 +126,62 @@ export async function mintNft(address: `0x${string}`): Promise<string> {
     },
   });
 
-  const { hash: data } = await writeContract(config);
+  const { hash } = await writeContract(config);
+  const data = await waitForTransaction({
+    hash: hash,
+  });
 
-  return `sending minting transaction: <a href="https://tuber.build/tx/${data.hash.toString()}">view on tuber.build</a>`;
+  return `minting completed: <a href="https://tuber.build/tx/${hash.toString()}">view on tuber.build</a>`;
 }
 
+export async function replenishNft(
+  address: `0x${string}`,
+  id: string,
+  days: string,
+): Promise<string> {
+  // check the balance or return error
+  const balance = await fetchBalance({
+    address: address as Address,
+  });
+
+  if (Number(days) < 1) {
+    return 'error: mininum of 1 day.';
+  }
+
+  const replenishVal = parseEther(
+    (Number(days) * Number(REPLENISH_PRICE)).toString(),
+  );
+
+  if (balance.value < replenishVal) {
+    return 'error: insufficient user balance.';
+  }
+
+  const owner = await readContract({
+    address: PIXELATED as Address,
+    abi: erc721ABI,
+    functionName: 'ownerOf',
+    args: [BigNumber.from(id)],
+  });
+
+  if (owner != address) {
+    return `error: not Pixelated owner for ID: ${id}.`;
+  }
+
+  const config = await prepareWriteContract({
+    ...pixelatedContract,
+    functionName: 'replenish',
+    args: [BigNumber.from(id)],
+    chainId: 7700,
+    overrides: {
+      from: address as Address,
+      value: replenishVal,
+    },
+  });
+
+  const { hash } = await writeContract(config);
+  const data = await waitForTransaction({
+    hash: hash,
+  });
+
+  return `replenishment completed: <a href="https://tuber.build/tx/${hash.toString()}">view on tuber.build</a>`;
+}
