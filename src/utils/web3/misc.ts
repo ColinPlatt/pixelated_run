@@ -1,4 +1,4 @@
-import { getAddress } from 'ethersv5/lib/utils';
+import { getAddress } from 'ethers/lib/utils';
 
 export function isSameAddress(address1 = '', address2 = '') {
   try {
