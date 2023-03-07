@@ -5,7 +5,7 @@ import {
   mintNft,
   getHasAccepted,
   acceptNft,
-  replenishNft
+  replenishNft,
 } from '@/api';
 
 const mintHelp = async (): Promise<string> => {
@@ -21,9 +21,6 @@ const replenishHelp = async (): Promise<string> => {
 };
 
 // @todo figure out how to return a response while we await
-const asyncResponse = () => {
-  return 'Doing something...';
-};
 
 const isNumeric = (val: string): boolean => {
   return !isNaN(Number(val));
@@ -36,14 +33,13 @@ export const info = async (args: string[]): Promise<string> => {
 
   const owner = getPixelsData(args[0]);
 
-  asyncResponse();
-
   return owner;
 };
 
 export const accept = async (args: string[]): Promise<string> => {
-  if (args.length == 0 || args[0] == '--help' || args[0] == '-h') return acceptHelp();
-  
+  if (args.length == 0 || args[0] == '--help' || args[0] == '-h')
+    return acceptHelp();
+
   if (
     args.join(' ') !=
     '"I understand that by minting this NFT I have a duty to cherish it. If I fail to do so, it will perish and it will be my fault."'
@@ -60,7 +56,6 @@ export const accept = async (args: string[]): Promise<string> => {
     return acceptNft(cleanedTerms.slice(1, cleanedTerms.length - 1));
   }
 };
-
 
 export const mint = async (args: string[]): Promise<string> => {
   if (args[0] == '--help' || args[0] == '-h') return mintHelp();

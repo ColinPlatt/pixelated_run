@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTheme } from '../../utils/themeProvider';
-import { useAuth } from "@/hooks";
+import { useAuth } from '@/hooks';
 
 export const Ps1 = () => {
   const [hostname, setHostname] = useState('');

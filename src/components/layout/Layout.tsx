@@ -7,8 +7,6 @@ interface Props {
   onClick: () => void;
 }
 
-
-
 const Layout: React.FC<Props> = ({ children, onClick }) => {
   const { theme } = useTheme();
 

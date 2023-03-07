@@ -1,6 +1,6 @@
-import { connect as connectMM, disconnect as disconnectMM } from '@wagmi/core'
-import { MetaMaskConnector } from '@wagmi/core/connectors/metaMask'
-import { cantoChain } from '@/utils/web3'
+import { connect as connectMM, disconnect as disconnectMM } from '@wagmi/core';
+import { MetaMaskConnector } from '@wagmi/core/connectors/metaMask';
+import { cantoChain } from '@/utils/web3';
 
 // @todo add other wallets under args
 

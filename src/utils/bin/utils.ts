@@ -1,10 +1,12 @@
 import packageJson from '../../../package.json';
-import * as bin from './index';
+import * as gen from './index';
+import * as connected from './pixelated';
 
 export const help = async (args: string[]): Promise<string> => {
-  const commands = Object.keys(bin).sort().join(', ');
+  const commandsGen = Object.keys(gen).sort().join(', ');
+  const commandsConnected = Object.keys(connected).sort().join(', ');
 
-  return `Available commands:\n${commands}\n\n[tab]\t trigger completion.\n[ctrl+l] clear terminal.\n[ctrl+c] cancel command.`;
+  return `All available commands:\n${commandsGen}\n\nPixelated related commands: \n${commandsConnected}\n\n[tab]\t trigger completion.\n[ctrl+l] clear terminal.\n[ctrl+c] cancel command.`;
 };
 
 export const repo = async (args?: string[]): Promise<string> => {
@@ -14,8 +16,6 @@ export const repo = async (args?: string[]): Promise<string> => {
 
   return 'Opening repository...';
 };
-
-
 
 export const start = (args?: string[]): string => {
   return `

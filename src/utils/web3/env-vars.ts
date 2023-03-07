@@ -37,5 +37,3 @@ export const ROYALTY_ENGINE_V1 =
   process.env.NEXT_PUBLIC_ROYALTY_ENGINE_V1 || '';
 export const OFFERS_V1 = process.env.NEXT_PUBLIC_OFFERS_V1 || '';
 export const ASKS_CSR = process.env.NEXT_PUBLIC_ASKS_CSR || '';
-
-
